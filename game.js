@@ -3,6 +3,10 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const scoreDisplay = document.getElementById('score');
 const resetBtn = document.getElementById('resetBtn');
+const menuBtn = document.getElementById('menuBtn');
+const startBtn = document.getElementById('startBtn');
+const menuScreen = document.getElementById('menuScreen');
+const gameScreen = document.getElementById('gameScreen');
 
 // Game State
 let gameState = {
@@ -13,7 +17,8 @@ let gameState = {
     dragStart: { x: 0, y: 0 },
     aimLine: { x1: 0, y1: 0, x2: 0, y2: 0 },
     chefX: 0,
-    chefY: 0
+    chefY: 0,
+    isGameRunning: false
 };
 
 // Physics
@@ -210,6 +215,108 @@ function initGame() {
     gameState.customers.push(new Customer(150, 120, 35));  // Left front
     gameState.customers.push(new Customer(400, 100, 35));  // Center front
     gameState.customers.push(new Customer(650, 120, 35));  // Right front
+}
+
+// Draw the restaurant background and scene
+function drawRestaurantBackground() {
+    // Floor (dark wood)
+    ctx.fillStyle = '#3D2817';
+    ctx.fillRect(0, canvas.height - 60, canvas.width, 60);
+    
+    // Floor shine/grain
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0.3)';
+    ctx.lineWidth = 2;
+    for (let i = 0; i < canvas.width; i += 80) {
+        ctx.beginPath();
+        ctx.moveTo(i, canvas.height - 60);
+        ctx.lineTo(i + 60, canvas.height);
+        ctx.stroke();
+    }
+    
+    // Walls - back wall
+    ctx.fillStyle = '#2A1810';
+    ctx.fillRect(0, 0, canvas.width, canvas.height - 60);
+    
+    // Wall texture - horizontal lines (wood paneling)
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < canvas.height - 60; i += 25) {
+        ctx.beginPath();
+        ctx.moveTo(0, i);
+        ctx.lineTo(canvas.width, i);
+        ctx.stroke();
+    }
+    
+    // Wall texture - vertical lines (wood grain)
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+    for (let i = 0; i < canvas.width; i += 40) {
+        ctx.beginPath();
+        ctx.moveTo(i, 0);
+        ctx.lineTo(i, canvas.height - 60);
+        ctx.stroke();
+    }
+    
+    // Left wall accent
+    const leftWallGradient = ctx.createLinearGradient(0, 0, 80, 0);
+    leftWallGradient.addColorStop(0, 'rgba(0, 0, 0, 0.4)');
+    leftWallGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = leftWallGradient;
+    ctx.fillRect(0, 0, 80, canvas.height - 60);
+    
+    // Right wall accent
+    const rightWallGradient = ctx.createLinearGradient(canvas.width - 80, 0, canvas.width, 0);
+    rightWallGradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
+    rightWallGradient.addColorStop(1, 'rgba(0, 0, 0, 0.4)');
+    ctx.fillStyle = rightWallGradient;
+    ctx.fillRect(canvas.width - 80, 0, 80, canvas.height - 60);
+    
+    // Ceiling/Top area - darker
+    ctx.fillStyle = '#1a0f0a';
+    ctx.fillRect(0, 0, canvas.width, 30);
+    
+    // Hanging lights
+    ctx.fillStyle = '#FFD700';
+    ctx.beginPath();
+    ctx.arc(150, 20, 8, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = 'rgba(255, 215, 0, 0.6)';
+    ctx.beginPath();
+    ctx.arc(150, 20, 12, 0, Math.PI * 2);
+    ctx.fill();
+    
+    ctx.fillStyle = '#FFD700';
+    ctx.beginPath();
+    ctx.arc(400, 20, 8, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = 'rgba(255, 215, 0, 0.6)';
+    ctx.beginPath();
+    ctx.arc(400, 20, 12, 0, Math.PI * 2);
+    ctx.fill();
+    
+    ctx.fillStyle = '#FFD700';
+    ctx.beginPath();
+    ctx.arc(650, 20, 8, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = 'rgba(255, 215, 0, 0.6)';
+    ctx.beginPath();
+    ctx.arc(650, 20, 12, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Japanese character decor on back wall
+    ctx.fillStyle = 'rgba(255, 200, 0, 0.3)';
+    ctx.font = 'bold 60px Arial';
+    ctx.textAlign = 'center';
+    ctx.globalAlpha = 0.15;
+    ctx.fillText('鉄板焼き', canvas.width / 2, 120);
+    ctx.globalAlpha = 1.0;
+    
+    // Restaurant counter background
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+    ctx.fillRect(0, 320, canvas.width, 40);
+    
+    // Red accent stripe (typical hibachi restaurant style)
+    ctx.fillStyle = '#CC0000';
+    ctx.fillRect(0, 325, canvas.width, 3);
 }
 
 // Draw the teppanyaki/hibachi grill
@@ -587,11 +694,10 @@ function update() {
 
 // Draw game
 function draw() {
-    // Clear canvas
-    ctx.fillStyle = 'rgba(135, 206, 235, 0.1)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // Draw restaurant background first
+    drawRestaurantBackground();
 
-    // Draw seated customers first (on far side of grill)
+    // Draw seated customers (on far side of grill)
     for (let customer of gameState.customers) {
         drawSeatedCustomer(customer);
     }
@@ -702,9 +808,20 @@ canvas.addEventListener('touchend', (e) => {
     e.preventDefault();
 });
 
-// Reset button
-resetBtn.addEventListener('click', initGame);
+// Menu and Game Controls
+startBtn.addEventListener('click', () => {
+    gameState.isGameRunning = true;
+    menuScreen.classList.add('hidden');
+    gameScreen.classList.remove('hidden');
+    initGame();
+    gameLoop();
+});
+
+menuBtn.addEventListener('click', () => {
+    gameState.isGameRunning = false;
+    gameScreen.classList.add('hidden');
+    menuScreen.classList.remove('hidden');
+});
 
 // Start game
-initGame();
 gameLoop();
