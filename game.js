@@ -376,6 +376,42 @@ function drawCook() {
     ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
     ctx.fillRect(33, -7, 8, 4);
     
+    // Draw shrimp on spatula (only when not dragging/tossing)
+    if (!gameState.isDragging) {
+        const shrimpX = 40;
+        const shrimpY = -8;
+        
+        // Shrimp body - curved
+        ctx.fillStyle = '#FF6B6B';
+        ctx.beginPath();
+        ctx.ellipse(shrimpX, shrimpY, 6, 4.5, 0, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Shrimp tail
+        ctx.fillStyle = '#E84C3D';
+        ctx.beginPath();
+        ctx.ellipse(shrimpX + 8, shrimpY + 4, 4, 2.5, Math.PI / 3, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Antennae
+        ctx.strokeStyle = '#FF6B6B';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(shrimpX - 4, shrimpY - 4);
+        ctx.quadraticCurveTo(shrimpX - 7, shrimpY - 9, shrimpX - 6, shrimpY - 13);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(shrimpX + 4, shrimpY - 4);
+        ctx.quadraticCurveTo(shrimpX + 7, shrimpY - 9, shrimpX + 6, shrimpY - 13);
+        ctx.stroke();
+        
+        // Shine
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+        ctx.beginPath();
+        ctx.ellipse(shrimpX - 2, shrimpY - 2, 2, 1.5, 0, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    
     ctx.restore();
 }
 
