@@ -31,15 +31,26 @@
           <h2>Select Difficulty:</h2>
           <div class="difficulty-buttons">
             <button class="difficulty-btn" data-time="90">🟢 Easy (90s)</button>
-            <button class="difficulty-btn active" data-time="60">🟡 Normal (60s)</button>
+            <button class="difficulty-btn active" data-time="60">
+              🟡 Normal (60s)
+            </button>
             <button class="difficulty-btn" data-time="30">🔴 Hard (30s)</button>
           </div>
-          <p class="difficulty-desc">Score as many points as you can before time runs out!</p>
+          <p class="difficulty-desc">
+            Score as many points as you can before time runs out!
+          </p>
         </div>
+
+        <section class="leaderboard-panel" aria-labelledby="leaderboard-title">
+          <h2 id="leaderboard-title">High Scores</h2>
+          <div id="leaderboard" class="leaderboard" aria-live="polite">
+            <p class="leaderboard-status">Loading high scores...</p>
+          </div>
+        </section>
 
         <button id="startBtn" class="start-btn">Start Game</button>
 
-        <p class="menu-footer">Made with ❤️ inspired by hibachi steakhouses</p>
+        <p class="menu-footer">Game inspired by hibachi steakhouses</p>
       </div>
     </div>
 
@@ -50,6 +61,7 @@
         <div class="score-display">
           <div class="score">Score: <span id="score">0</span></div>
           <div class="timer">Time: <span id="timer">60</span>s</div>
+          <div class="difficulty-readout">Difficulty: <span id="difficulty">Normal</span></div>
           <div class="instructions">
             <p>Click and drag to aim, release to toss!</p>
           </div>

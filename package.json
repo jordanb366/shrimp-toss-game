@@ -1,0 +1,8 @@
+{
+  "name": "shrimp-toss-game",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

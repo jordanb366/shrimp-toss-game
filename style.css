@@ -40,7 +40,8 @@ body::before {
     top: 0;
     left: 0;
     z-index: 100;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .menu-screen::before {
@@ -93,6 +94,7 @@ body::before {
     border: 1px solid rgba(255, 255, 255, 0.2);
     position: relative;
     z-index: 2;
+    margin: auto;
 }
 
 @keyframes slideIn {
@@ -492,6 +494,11 @@ h1 {
     text-align: center;
 }
 
+.difficulty-readout {
+    color: #667eea;
+    font-weight: bold;
+}
+
 .instructions p {
     margin: 8px 0;
     font-weight: 500;
@@ -554,6 +561,53 @@ h1 {
 .menu-btn:hover {
     background: linear-gradient(135deg, #ff5252 0%, #ff6e40 100%);
     box-shadow: 0 12px 35px rgba(255, 107, 107, 0.3);
+}
+
+.leaderboard-panel {
+    background: linear-gradient(135deg, #f0f4ff 0%, #fff5f7 100%);
+    border-radius: 15px;
+    padding: 22px;
+    margin: 25px 0;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.1);
+}
+
+.leaderboard-panel h2 {
+    color: #1a1a2e;
+    margin-bottom: 14px;
+}
+
+.leaderboard {
+    min-height: 40px;
+}
+
+.leaderboard table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #333;
+}
+
+.leaderboard th,
+.leaderboard td {
+    padding: 8px 6px;
+    text-align: left;
+    border-bottom: 1px solid rgba(102, 126, 234, 0.15);
+}
+
+.leaderboard th:first-child,
+.leaderboard td:first-child,
+.leaderboard th:nth-child(3),
+.leaderboard td:nth-child(3) {
+    text-align: center;
+}
+
+.leaderboard-status {
+    color: #666;
+    margin: 0;
+}
+
+.leaderboard-status.error,
+.score-submit-status {
+    color: #c0392b;
 }
 
 /* Game Over Overlay */
@@ -622,6 +676,40 @@ h1 {
     color: #667eea;
     font-weight: bold;
     font-size: 1.4em;
+}
+
+.score-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.score-form label {
+    color: #333;
+    font-weight: bold;
+}
+
+.score-form input {
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    padding: 12px;
+}
+
+.score-form input:focus {
+    border-color: #667eea;
+    outline: none;
+}
+
+.score-form button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+.score-submit-status {
+    min-height: 1.2em;
+    margin: 0;
 }
 
 .game-over-buttons {
