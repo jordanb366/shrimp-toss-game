@@ -27,9 +27,19 @@
           </ul>
         </div>
 
+        <div class="difficulty-selector">
+          <h2>Select Difficulty:</h2>
+          <div class="difficulty-buttons">
+            <button class="difficulty-btn" data-time="90">🟢 Easy (90s)</button>
+            <button class="difficulty-btn active" data-time="60">🟡 Normal (60s)</button>
+            <button class="difficulty-btn" data-time="30">🔴 Hard (30s)</button>
+          </div>
+          <p class="difficulty-desc">Score as many points as you can before time runs out!</p>
+        </div>
+
         <button id="startBtn" class="start-btn">Start Game</button>
 
-        <p class="menu-footer">Inspired by hibachi steakhouses</p>
+        <p class="menu-footer">Made with ❤️ inspired by hibachi steakhouses</p>
       </div>
     </div>
 
@@ -39,9 +49,9 @@
         <h1>🦐 Shrimp Toss 🦐</h1>
         <div class="score-display">
           <div class="score">Score: <span id="score">0</span></div>
+          <div class="timer">Time: <span id="timer">60</span>s</div>
           <div class="instructions">
             <p>Click and drag to aim, release to toss!</p>
-            <p>Get the shrimp to land on the customers!</p>
           </div>
         </div>
         <canvas id="gameCanvas" width="800" height="600"></canvas>
